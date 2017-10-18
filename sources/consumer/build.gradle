@@ -1,0 +1,28 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
+group 'de.fhro.mis.exercise-2.docker-swarm'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'application'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.apache.commons:commons-lang3:$commons_lang3_version"
+    compile "com.rabbitmq:amqp-client:$rabbitmq_amqp_client_version"
+}
+
+tasks.withType(JavaCompile) {
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+    options.encoding = 'UTF-8'
+}
+
+mainClassName = 'de.fhro.mis.dockerSwarm.consumer.App'
+
