@@ -1,0 +1,41 @@
+version: '3.6'
+services:
+  rabbitmq:
+    image: rabbitmq:management-alpine
+    networks:
+    - producer-msg
+    - consumer-msg
+    ports:
+    - target: 15672
+      published: 15672
+      protocol: tcp
+
+  producer:
+    image: mis-producer
+    ports:
+    - target: 8080
+      published: 8080
+      protocol: tcp
+    environment:
+      RABBITMQ_HOST: rabbitmq
+    networks:
+    - consumer-msg
+    links:
+    - rabbitmq:rabbitmq
+    depends_on:
+    - rabbitmq
+
+  consumer:
+    image: mis-consumer
+    environment:
+      RABBITMQ_HOST: rabbitmq
+    networks:
+    - consumer-msg
+    links:
+    - rabbitmq:rabbitmq
+    depends_on:
+    - rabbitmq
+
+networks:
+  producer-msg: {}
+  consumer-msg: {}
