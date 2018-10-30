@@ -1,0 +1,12 @@
+apply plugin: 'application'
+
+repositories {
+    mavenCentral()
+}
+
+mainClassName = 'de.thro.mis.dockerSwarm.consumer.App'
+
+dependencies {
+    compile "org.apache.commons:commons-lang3:$commons_lang3_version"
+    compile "com.rabbitmq:amqp-client:$rabbitmq_amqp_client_version"
+}

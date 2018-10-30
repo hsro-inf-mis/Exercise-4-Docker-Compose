@@ -1,0 +1,36 @@
+plugins {
+    id 'org.mikeneck.payara-plugin' version '0.0.2'
+    id "com.gmaslowski.gradle.plugin.docker" version "0.3"
+}
+
+apply plugin: 'war'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    providedCompile "fish.payara.extras:payara-micro:$payara_version"
+    providedCompile "javax:javaee-api:$javaee_api_version"
+    compile "com.fasterxml.jackson.module:jackson-module-jsonSchema:$jackson_module_version"
+    compile "org.webjars:swagger-ui:$swagger_ui_version"
+    compile "io.swagger.core.v3:swagger-core:$swagger_jaxrs_version"
+    compile "io.swagger.core.v3:swagger-jaxrs2:$swagger_jaxrs_version"
+    compile "io.swagger.core.v3:swagger-jaxrs2-servlet-initializer:$swagger_jaxrs_version"
+    compile "com.thetransactioncompany:cors-filter:$cors_filter_version"
+    compile "org.apache.commons:commons-lang3:$commons_lang3_version"
+    compile "com.rabbitmq:amqp-client:$rabbitmq_amqp_client_version"
+}
+
+docker {
+    workingDir "$buildDir/docker"
+    tags = ["mis-producer:latest"]
+    dockerfile = "$projectDir/src/main/docker/Dockerfile"
+    files = [war.archivePath]
+}
+
+payara {
+    httpPort = 8080
+    daemon = false
+}
+

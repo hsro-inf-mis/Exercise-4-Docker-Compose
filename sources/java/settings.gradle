@@ -1,0 +1,2 @@
+rootProject.name = 'consumer-producer'
+include 'producer', 'consumer'
