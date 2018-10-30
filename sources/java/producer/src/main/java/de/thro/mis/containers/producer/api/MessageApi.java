@@ -4,6 +4,8 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import de.thro.mis.containers.producer.models.MessageDto;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
@@ -11,6 +13,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -25,6 +28,7 @@ import java.io.IOException;
 @Stateless
 @Path("Message")
 @Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class MessageApi {
 
 	@Inject
@@ -33,7 +37,7 @@ public class MessageApi {
 
 	@POST
 	@Path("/")
-	@Operation(summary = "Send a message to a consumer", method = "POST")
+	@Operation(summary = "Send a message to a consumer", method = "POST", requestBody = @RequestBody(content = @Content(mediaType = MediaType.APPLICATION_JSON)))
 	@ApiResponses({
 			@ApiResponse(responseCode = "200", description = "Sent message successfully to RabbitMQ server"),
 			@ApiResponse(responseCode = "500", description = "Failed to send message to RabbitMQ server")
@@ -58,7 +62,7 @@ public class MessageApi {
 	}
 
 	@PreDestroy
-	public void closeChannel(){
+	public void closeChannel() {
 		try {
 			channel.close();
 		} catch (Exception e) {
